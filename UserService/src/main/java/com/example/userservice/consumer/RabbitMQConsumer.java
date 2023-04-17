@@ -1,7 +1,10 @@
 package com.example.userservice.consumer;
 
+
 import com.example.userservice.model.MessageData;
 import com.example.userservice.model.Student;
+import com.example.userservice.model.UsernameResponse;
+import com.example.userservice.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -23,7 +26,10 @@ public class RabbitMQConsumer {
     private String queue;
 
     @Value(value = "${cosmetics.rabbitmq.routingkey-user}")
+    private final String CREATE_USER="CREATE_USER";
     private String routingKey;
+    @Autowired
+    private UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
     @RabbitListener(queues = {"user-service"})
@@ -33,7 +39,14 @@ public class RabbitMQConsumer {
                         @Header(value = AmqpHeaders.CORRELATION_ID, required = false) String correlationId
     )  {
         LOGGER.info(String.format("Received message -> %s", message));
-        sendResponse(senderId,correlationId,new Student("ssss"));
+        switch (message.getTarget()){
+            case CREATE_USER:{
+                String username= userService.createUser();
+                sendResponse(senderId,correlationId, UsernameResponse.builder().username(username).build());
+                break;
+            }
+
+        }
     }
 
     @Autowired

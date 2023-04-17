@@ -22,16 +22,12 @@ import org.springframework.stereotype.Service;
 public class RabbitMQConsumer {
 
     private final static String GET_ALL="GET_ALL";
+    private final static String GET_ONE_PRODUCT="GET_ONE_PRODUCT";
 
 
     @Autowired
-    ProductControler productControler;
+    ProductService productService;
 
-    @Value(value = "${cosmetics.rabbitmq.queue-product}")
-    private String queue;
-
-    @Value(value = "${cosmetics.rabbitmq.routingkey-product}")
-    private String routingKey;
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
     @RabbitListener(queues = {"product-service"})
@@ -42,8 +38,15 @@ public class RabbitMQConsumer {
     ){
         LOGGER.info(String.format("Received message -> %s", message));
         switch (message.getTarget()){
-            case GET_ALL:
-                    sendResponse(senderId,correlationId,productControler.getAll());
+            case GET_ALL: {
+                sendResponse(senderId, correlationId, productService.getAll());
+                break;
+            }
+            case GET_ONE_PRODUCT: {
+                 Integer id =(Integer) message.getData();
+                 sendResponse(senderId, correlationId,productService.getById(id.longValue()));
+                 break;
+            }
 
         }
 

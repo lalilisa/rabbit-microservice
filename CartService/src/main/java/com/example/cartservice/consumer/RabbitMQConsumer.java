@@ -1,7 +1,11 @@
 package com.example.cartservice.consumer;
 
 
+
+import com.example.cartservice.model.CartCommand;
 import com.example.cartservice.model.MessageData;
+import com.example.cartservice.service.CartService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,16 +22,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMQConsumer {
 
-
+    private static final String ADD_TO_CART="ADD_TO_CART";
+    private static final String GET_CART="GET_CART";
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQConsumer.class);
-
+    @Autowired
+    private CartService cartService;
     @RabbitListener(queues = {"cart-service"})
     @SendTo
     public void consume(MessageData message,
                         @Header(value = AmqpHeaders.REPLY_TO, required = false) String senderId,
                         @Header(value = AmqpHeaders.CORRELATION_ID, required = false) String correlationId
-    ){
+    ) throws JsonProcessingException {
         LOGGER.info(String.format("Received message -> %s", message));
+        switch (message.getTarget()){
+            case ADD_TO_CART:{
+                ObjectMapper objectMapper= new ObjectMapper();
+                String json=objectMapper.writeValueAsString(message.getData());
+                CartCommand cartCommand=objectMapper.readValue(json,CartCommand.class);
+                System.out.println(cartCommand);
+                sendResponse(senderId,correlationId,cartService.addtoCart(cartCommand));
+                break;
+            }
+            case GET_CART:{
+                sendResponse(senderId,correlationId,cartService.getCart((String) message.getData()));
+                break;
+            }
+        }
     }
     @Autowired
     private RabbitTemplate rabbitTemplate;

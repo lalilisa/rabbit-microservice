@@ -2,7 +2,7 @@ package com.example.cartservice.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
@@ -10,17 +10,16 @@ import javax.persistence.Entity;
 @Builder
 @Getter
 @Setter
+@Table
 public class Cart {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String productName;
 
     private Long productId;
 
     private String userName;
-
-    private String username;
 
     private int quantity;
 
