@@ -20,7 +20,7 @@ public class Cart {
 
     private String userName;
 
-    private Long userId;
+    private String username;
 
     private int quantity;
 
