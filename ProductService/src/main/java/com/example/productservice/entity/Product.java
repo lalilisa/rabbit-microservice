@@ -1,5 +1,6 @@
 package com.example.productservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Product {
 
     private int quantity;
 
+    @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL)
     private List<Image> images;
 

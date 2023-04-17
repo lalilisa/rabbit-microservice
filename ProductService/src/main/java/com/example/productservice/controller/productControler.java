@@ -17,7 +17,7 @@ public class productControler {
     RabbitMQConsumer rabbitMQConsumer;
     public void getAll(){
         List<Product> list = productService.findAll();
-        rabbitMQConsumer.sendResponse("", "", list);
+
     }
 
     public void getById(Long id){

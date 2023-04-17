@@ -1,8 +1,10 @@
 package com.example.gatewayservice.controller;
 
+import com.example.gatewayservice.model.MessageData;
 import com.example.gatewayservice.producer.RabbitMQProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +23,10 @@ public class UserController {
     @Value("${cosmetics.rabbitmq.routingkey-product}")
     private String routingkeyP;
     private final RabbitMQProducer rabbitMQProducer;
-    @GetMapping()
+    @GetMapping(value = "",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> test(){
-
-        rabbitMQProducer.sendMessage(exchange,routingkey,"TriMV");
-        return ResponseEntity.ok("RIMAI");
+        Object o=rabbitMQProducer.sendMessage(exchange,routingkeyP,new MessageData("smsm","GET_ALL",null));
+        return ResponseEntity.ok(o);
     }
 
     @GetMapping("p")
