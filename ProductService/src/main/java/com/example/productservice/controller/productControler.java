@@ -1,10 +1,15 @@
 package com.example.productservice.controller;
 
 import com.example.productservice.consumer.RabbitMQConsumer;
+import com.example.productservice.entity.Image;
 import com.example.productservice.entity.Product;
+import com.example.productservice.model.ImageView;
+import com.example.productservice.model.ProductView;
+import com.example.productservice.service.ImageService;
 import com.example.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class productControler {
@@ -12,16 +17,53 @@ public class productControler {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    ImageService imageService;
+
 
     @Autowired
     RabbitMQConsumer rabbitMQConsumer;
-    public void getAll(){
-        List<Product> list = productService.findAll();
-        rabbitMQConsumer.sendResponse("", "", list);
+    public List<ProductView> getAll(){
+        List<ProductView> list = new ArrayList<>();
+        List<Product> listProduct = productService.findAll();
+        for(Product pr: listProduct){
+            ProductView product = new ProductView();
+            product.setId(pr.getId());
+            product.setName(pr.getName());
+            product.setDescription(pr.getDescription());
+            product.setPrice(pr.getPrice());
+            product.setCreateDate(pr.getCreateDate());
+            List<Image> listImage = imageService.getImageByProductId(pr.getId());
+            List<ImageView> imageViewList = new ArrayList<>();
+
+            for(Image image:listImage){
+                ImageView imageView =new ImageView(image.getId(), image.getImage());
+                imageViewList.add(imageView);
+            }
+
+            product.setImages(imageViewList);
+        }
+        return list;
     }
 
-    public void getById(Long id){
-        Product product = productService.getProductById(id);
-        rabbitMQConsumer.sendResponse("", "", product);
+    public ProductView getById(Long id){
+        ProductView product = new ProductView();
+        Product pr = productService.getProductById(id);
+
+        product.setId(pr.getId());
+        product.setName(pr.getName());
+        product.setDescription(pr.getDescription());
+        product.setPrice(pr.getPrice());
+        product.setCreateDate(pr.getCreateDate());
+        List<Image> listImage = imageService.getImageByProductId(pr.getId());
+        List<ImageView> imageViewList = new ArrayList<>();
+
+        for(Image image:listImage){
+            ImageView imageView =new ImageView(image.getId(), image.getImage());
+            imageViewList.add(imageView);
+        }
+
+        product.setImages(imageViewList);
+        return product;
     }
 }
