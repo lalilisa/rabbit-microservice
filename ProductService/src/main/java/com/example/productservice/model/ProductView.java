@@ -1,19 +1,17 @@
-package com.example.productservice.entity;
+package com.example.productservice.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
 @Setter
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductView {
     private Long id;
 
     private String name;
@@ -25,5 +23,5 @@ public class Product {
     private int price;
 
     private int quantity;
-
+    private List<ImageView> images;
 }
