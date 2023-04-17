@@ -1,6 +1,7 @@
 package com.example.productservice.consumer;
 
 
+import com.example.productservice.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.MessageProperties;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitMQConsumer {
+
+    @Autowired
+    ProductService productService;
 
     @Value(value = "${cosmetics.rabbitmq.queue-product}")
     private String queue;
