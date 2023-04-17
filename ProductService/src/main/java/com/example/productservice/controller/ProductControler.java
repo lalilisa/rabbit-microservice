@@ -8,11 +8,13 @@ import com.example.productservice.model.ProductView;
 import com.example.productservice.service.ImageService;
 import com.example.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class productControler {
+@Service
+public class ProductControler {
 
     @Autowired
     ProductService productService;
@@ -21,8 +23,6 @@ public class productControler {
     ImageService imageService;
 
 
-    @Autowired
-    RabbitMQConsumer rabbitMQConsumer;
     public List<ProductView> getAll(){
         List<ProductView> list = new ArrayList<>();
         List<Product> listProduct = productService.findAll();
@@ -42,6 +42,7 @@ public class productControler {
             }
 
             product.setImages(imageViewList);
+            list.add(product);
         }
         return list;
     }

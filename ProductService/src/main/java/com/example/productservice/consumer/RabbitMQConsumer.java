@@ -1,6 +1,7 @@
 package com.example.productservice.consumer;
 
 
+import com.example.productservice.controller.ProductControler;
 import com.example.productservice.model.MessageData;
 import com.example.productservice.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,8 +22,10 @@ import org.springframework.stereotype.Service;
 public class RabbitMQConsumer {
 
     private final static String GET_ALL="GET_ALL";
+
+
     @Autowired
-    ProductService productService;
+    ProductControler productControler;
 
     @Value(value = "${cosmetics.rabbitmq.queue-product}")
     private String queue;
@@ -40,7 +43,7 @@ public class RabbitMQConsumer {
         LOGGER.info(String.format("Received message -> %s", message));
         switch (message.getTarget()){
             case GET_ALL:
-                    sendResponse(senderId,correlationId,productService.findAll());
+                    sendResponse(senderId,correlationId,productControler.getAll());
 
         }
 

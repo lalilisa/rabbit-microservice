@@ -5,9 +5,10 @@ import com.example.productservice.entity.Product;
 import com.example.productservice.repository.ImageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ImageService {
     @Autowired
     ImageRepo imageRepo;
@@ -16,8 +17,8 @@ public class ImageService {
         return imageRepo.findAll();
     }
 
-    @Query(value = "SELECT * FROM image WHERE productId=:productId", nativeQuery = true)
+
     public List<Image> getImageByProductId(Long productId) {
-        return imageRepo.getImageByProductId(productId);
+        return imageRepo.findImageByProductId(productId);
     }
 }
