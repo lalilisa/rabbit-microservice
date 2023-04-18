@@ -68,7 +68,7 @@ public class CartService {
         ObjectMapper objectMapper=new ObjectMapper();
         Object res=null;
         String username=null;
-        if(cartCommand.getUsername()==null) {
+        if(cartCommand.getUsername()==null || cartCommand.getUsername().isEmpty()) {
             res = rabbitTemplateReq.convertSendAndReceive(exchange, routingkey, new MessageData("", "CREATE_USER", null));
             UsernameResponse usernameResponse=objectMapper.readValue(res.toString(),UsernameResponse.class);
             username=usernameResponse.getUsername();

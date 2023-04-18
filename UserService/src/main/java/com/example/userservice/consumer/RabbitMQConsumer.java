@@ -2,7 +2,7 @@ package com.example.userservice.consumer;
 
 
 import com.example.userservice.model.MessageData;
-import com.example.userservice.model.Student;
+
 import com.example.userservice.model.UsernameResponse;
 import com.example.userservice.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;

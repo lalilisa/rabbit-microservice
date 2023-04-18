@@ -2,6 +2,7 @@ package com.example.userservice.service;
 
 import com.example.userservice.entity.User;
 import com.example.userservice.repository.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.function.Function;
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepo userRepo;
 
 
