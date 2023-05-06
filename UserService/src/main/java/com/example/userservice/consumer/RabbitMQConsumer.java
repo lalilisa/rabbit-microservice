@@ -3,6 +3,7 @@ package com.example.userservice.consumer;
 
 import com.example.userservice.model.MessageData;
 
+import com.example.userservice.model.OrderDto;
 import com.example.userservice.model.UsernameResponse;
 import com.example.userservice.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,7 +27,9 @@ public class RabbitMQConsumer {
     private String queue;
 
     @Value(value = "${cosmetics.rabbitmq.routingkey-user}")
-    private final String CREATE_USER="CREATE_USER";
+    private  static final String CREATE_USER="CREATE_USER";
+    private  static final String GET_USER="GET_USER";
+    private  static final String UPDATE_AFTER_ORDER="UPDATE_AFTER_ORDER";
     private String routingKey;
     @Autowired
     private UserService userService;
@@ -37,7 +40,7 @@ public class RabbitMQConsumer {
     public void consume(MessageData message,
                         @Header(value = AmqpHeaders.REPLY_TO, required = false) String senderId,
                         @Header(value = AmqpHeaders.CORRELATION_ID, required = false) String correlationId
-    )  {
+    ) throws JsonProcessingException {
         LOGGER.info(String.format("Received message -> %s", message));
         switch (message.getTarget()){
             case CREATE_USER:{
@@ -45,7 +48,17 @@ public class RabbitMQConsumer {
                 sendResponse(senderId,correlationId, UsernameResponse.builder().username(username).build());
                 break;
             }
-
+            case GET_USER:{
+                String username= (String) message.getData();
+                sendResponse(senderId,correlationId, userService.getUserByUsername(username));
+                break;
+            }
+            case UPDATE_AFTER_ORDER:{
+                ObjectMapper objectMapper= new ObjectMapper();
+                String json=objectMapper.writeValueAsString(message.getData());
+                OrderDto orderDto=objectMapper.readValue(json,OrderDto.class);
+                userService.updateUser(orderDto.getUsername(),orderDto.getUsername(),orderDto.getAddress(),orderDto.getPhonenumber());
+            }
         }
     }
 

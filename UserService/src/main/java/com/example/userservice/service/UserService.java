@@ -31,11 +31,11 @@ public class UserService {
     }
 
     public User getUserByUsername(String username){
-        return userRepo.getUserByUsername(username);
+        return userRepo.findByUsername(username);
     }
 
     public User updateUser(String username, String name, String address, String phone){
-        User user = userRepo.getUserByUsername(username);
+        User user = userRepo.findByUsername(username);
         user.setAddress(address);
         user.setPhone(phone);
         user.setName(name);

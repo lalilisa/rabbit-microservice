@@ -1,19 +1,16 @@
-package com.example.productservice.entity;
+package com.example.orderservice.model;
 
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Getter
 @Setter
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Getter
+@Builder
+@ToString
+public class Product implements Serializable {
     private Long id;
 
     private String name;
@@ -27,5 +24,4 @@ public class Product {
     private int quantity;
 
     private String img;
-
 }

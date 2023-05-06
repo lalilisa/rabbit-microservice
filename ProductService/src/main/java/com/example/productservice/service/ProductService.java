@@ -3,6 +3,7 @@ package com.example.productservice.service;
 import com.example.productservice.entity.Image;
 import com.example.productservice.entity.Product;
 import com.example.productservice.model.ImageView;
+import com.example.productservice.model.OderDetail;
 import com.example.productservice.model.ProductView;
 import com.example.productservice.repository.ImageRepo;
 import com.example.productservice.repository.ProductRepo;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -98,5 +100,15 @@ public class ProductService {
 
         product.setImages(imageViewList);
         return product;
+    }
+
+    public void updateAfterOrder(List<OderDetail> details){
+       List<Long> ids= details.stream().map(OderDetail::getProductId).collect(Collectors.toList());
+            List<Product> products=productRepo.findAllById(ids);
+            products.forEach(product -> {
+                OderDetail oderDetail=details.stream().filter(oderDetail1 -> oderDetail1.getProductId().equals(product.getId())).findFirst().orElse(null);
+                product.setQuantity(product.getQuantity()-oderDetail.getQuantity());
+            });
+            productRepo.saveAll(products);
     }
 }
