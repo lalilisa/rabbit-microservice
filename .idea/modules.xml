@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CartService/CartService.iml" filepath="$PROJECT_DIR$/CartService/CartService.iml" />
       <module fileurl="file://$PROJECT_DIR$/GatewayService/GatewayService.iml" filepath="$PROJECT_DIR$/GatewayService/GatewayService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OrderService/OrderService.iml" filepath="$PROJECT_DIR$/OrderService/OrderService.iml" />
       <module fileurl="file://$PROJECT_DIR$/ProductService/ProductService.iml" filepath="$PROJECT_DIR$/ProductService/ProductService.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringMicro.iml" filepath="$PROJECT_DIR$/SpringMicro.iml" />
       <module fileurl="file://$PROJECT_DIR$/UserService/UserService.iml" filepath="$PROJECT_DIR$/UserService/UserService.iml" />

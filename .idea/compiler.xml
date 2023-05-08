@@ -2,11 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="CartService" />
+        <module name="OrderService" />
         <module name="UserService" />
         <module name="ProductService" />
         <module name="GatewayService" />
@@ -15,6 +17,7 @@
     <bytecodeTargetLevel>
       <module name="CartService" target="11" />
       <module name="GatewayService" target="11" />
+      <module name="OrderService" target="11" />
       <module name="ProductService" target="11" />
       <module name="UserService" target="11" />
     </bytecodeTargetLevel>
@@ -23,6 +26,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CartService" options="-parameters" />
       <module name="GatewayService" options="-parameters" />
+      <module name="OrderService" options="-parameters" />
       <module name="ProductService" options="-parameters" />
       <module name="UserService" options="-parameters" />
     </option>
