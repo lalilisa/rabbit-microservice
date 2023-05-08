@@ -66,13 +66,10 @@ public class ProductService {
             product.setDescription(pr.getDescription());
             product.setPrice(pr.getPrice());
             product.setCreateDate(pr.getCreateDate());
-            List<Image> listImage = imageRepo.findImageByProductId(pr.getId());
+            product.setQuantity(pr.getQuantity());
             List<ImageView> imageViewList = new ArrayList<>();
+            imageViewList.add(ImageView.builder().image(pr.getImg()).build());
 
-            for(Image image:listImage){
-                ImageView imageView =new ImageView(image.getId(), image.getImage());
-                imageViewList.add(imageView);
-            }
 
             product.setImages(imageViewList);
             list.add(product);
@@ -91,13 +88,9 @@ public class ProductService {
         product.setPrice(pr.getPrice());
         product.setCreateDate(pr.getCreateDate());
         List<Image> listImage = imageRepo.findImageByProductId(pr.getId());
+        product.setQuantity(pr.getQuantity());
         List<ImageView> imageViewList = new ArrayList<>();
-
-        for(Image image:listImage){
-            ImageView imageView =new ImageView(image.getId(), image.getImage());
-            imageViewList.add(imageView);
-        }
-
+        imageViewList.add(ImageView.builder().image(pr.getImg()).build());
         product.setImages(imageViewList);
         return product;
     }
