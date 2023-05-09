@@ -1,9 +1,7 @@
 package com.example.cartservice.service;
 
 import com.example.cartservice.entity.Cart;
-import com.example.cartservice.model.CartCommand;
-import com.example.cartservice.model.MessageData;
-import com.example.cartservice.model.UsernameResponse;
+import com.example.cartservice.model.*;
 import com.example.cartservice.repository.CartRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -86,5 +84,14 @@ public class CartService {
                 .userName(username)
                 .build();
         return cartRepo.save(cart);
+    }
+
+    public void updateAfterOrder(OrderDto orderDto){
+      List<Cart> list=  cartRepo.getCartByUserId(orderDto.getUsername());
+      list.forEach(cart -> {
+          cart.setStatus(0);
+      });
+        System.out.println(list);
+      cartRepo.saveAll(list);
     }
 }

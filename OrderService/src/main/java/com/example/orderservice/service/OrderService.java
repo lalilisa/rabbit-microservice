@@ -33,6 +33,9 @@ public class OrderService {
     @Value("${cosmetics.rabbitmq.routingkey-product}")
     private String routingkeyProduct;
 
+    @Value("${cosmetics.rabbitmq.routingkey-cart}")
+    private String routingkeyCart;
+
     @Autowired
     private  OrderRepository orderRepository;
 
@@ -122,6 +125,7 @@ public class OrderService {
          orderDetailRepository.saveAll(orderDetails);
         rabbitTemplate.convertAndSend(exchange,routingkeyProduct,new MessageData("ss","UPDATE_AFTER_ORDER",orderDto.getDetails()));
         rabbitTemplate.convertAndSend(exchange,routingkeyUser,new MessageData("ss","UPDATE_AFTER_ORDER",orderDto));
+        rabbitTemplate.convertAndSend(exchange,routingkeyCart,new MessageData("ss","UPDATE_AFTER_ORDER",orderDto));
         return OrderView.builder()
                 .name(orderDto.getName())
                 .address(orderDto.getAddress())

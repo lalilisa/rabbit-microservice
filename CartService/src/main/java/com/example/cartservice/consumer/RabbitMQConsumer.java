@@ -4,6 +4,7 @@ package com.example.cartservice.consumer;
 
 import com.example.cartservice.model.CartCommand;
 import com.example.cartservice.model.MessageData;
+import com.example.cartservice.model.OrderDto;
 import com.example.cartservice.service.CartService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,7 @@ public class RabbitMQConsumer {
 
     private static final String ADD_TO_CART="ADD_TO_CART";
     private static final String GET_CART="GET_CART";
+    private static final String UPDATE_AFTER_ORDER="UPDATE_AFTER_ORDER";
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMQConsumer.class);
     @Autowired
     private CartService cartService;
@@ -45,6 +47,13 @@ public class RabbitMQConsumer {
             }
             case GET_CART:{
                 sendResponse(senderId,correlationId,cartService.getCart((String) message.getData()));
+                break;
+            }
+            case UPDATE_AFTER_ORDER:{
+                ObjectMapper objectMapper= new ObjectMapper();
+                String json=objectMapper.writeValueAsString(message.getData());
+                OrderDto orderDto=objectMapper.readValue(json,OrderDto.class);
+                cartService.updateAfterOrder(orderDto);
                 break;
             }
         }
