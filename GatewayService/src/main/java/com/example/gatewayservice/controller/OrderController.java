@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/order")
 @RequiredArgsConstructor
+@CrossOrigin
 public class OrderController {
     @Value("${cosmetics.rabbitmq.exchange}")
     private String exchange;

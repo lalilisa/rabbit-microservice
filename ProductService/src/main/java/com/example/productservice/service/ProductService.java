@@ -32,6 +32,7 @@ public class ProductService {
     }
 
     public List<Product> findAll(Sort sort) {
+
         return productRepo.findAll(sort);
     }
 

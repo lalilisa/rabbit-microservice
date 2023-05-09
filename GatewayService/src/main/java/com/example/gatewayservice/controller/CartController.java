@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("api/cart")
-
+@CrossOrigin
 public class CartController {
 
     @Value("${cosmetics.rabbitmq.exchange}")

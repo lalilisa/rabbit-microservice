@@ -2,9 +2,11 @@ package com.example.productservice.consumer;
 
 
 import com.example.productservice.controller.ProductControler;
+import com.example.productservice.entity.Product;
 import com.example.productservice.model.MessageData;
 import com.example.productservice.model.OderDetail;
 import com.example.productservice.model.ProductIds;
+import com.example.productservice.model.ProductView;
 import com.example.productservice.repository.ProductRepo;
 import com.example.productservice.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -53,7 +55,8 @@ public class RabbitMQConsumer {
         LOGGER.info(String.format("Received message -> %s", message));
         switch (message.getTarget()){
             case GET_ALL: {
-                sendResponse(senderId, correlationId, productService.getAll());
+                List<ProductView> products=productService.getAll();
+                sendResponse(senderId, correlationId, products);
                 break;
             }
             case GET_ONE_PRODUCT: {
