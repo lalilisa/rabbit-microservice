@@ -45,6 +45,7 @@ public class OrderController {
                                            @RequestParam("name") String name
                                            ){
         String username=request.getHeader("token");
+        System.out.println(oderDetail);
         OrderDto orderDto=OrderDto.builder()
                     .username(username)
                     .phonenumber(phone)
