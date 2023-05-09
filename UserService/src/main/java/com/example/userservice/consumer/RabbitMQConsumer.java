@@ -49,6 +49,7 @@ public class RabbitMQConsumer {
                 break;
             }
             case GET_USER:{
+                System.out.println(message.getData());
                 String username= (String) message.getData();
                 sendResponse(senderId,correlationId, userService.getUserByUsername(username));
                 break;
@@ -57,7 +58,7 @@ public class RabbitMQConsumer {
                 ObjectMapper objectMapper= new ObjectMapper();
                 String json=objectMapper.writeValueAsString(message.getData());
                 OrderDto orderDto=objectMapper.readValue(json,OrderDto.class);
-                userService.updateUser(orderDto.getUsername(),orderDto.getUsername(),orderDto.getAddress(),orderDto.getPhonenumber());
+                userService.updateUser(orderDto.getUsername(),orderDto.getName(),orderDto.getAddress(),orderDto.getPhonenumber());
             }
         }
     }

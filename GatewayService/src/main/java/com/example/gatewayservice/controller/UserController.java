@@ -1,6 +1,7 @@
 package com.example.gatewayservice.controller;
 
 
+import com.example.gatewayservice.model.MessageData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-@CrossOrigin
-@RestController
-@RequestMapping("api/user")
 
+@RestController()
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("api/user")
 public class UserController {
     @Value("${cosmetics.rabbitmq.exchange}")
     private String exchange;
@@ -27,10 +28,10 @@ public class UserController {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    @GetMapping(value = "user-infor",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserInfo(HttpServletRequest request){
         String username=request.getHeader("token");
-        Object o=rabbitTemplate.convertSendAndReceive(exchange,routingkeyUser,username);
+        Object o=rabbitTemplate.convertSendAndReceive(exchange,routingkeyUser,new MessageData("ss","GET_USER",username));
         return ResponseEntity.ok(o);
     }
 }

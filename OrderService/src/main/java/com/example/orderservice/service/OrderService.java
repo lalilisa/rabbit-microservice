@@ -82,9 +82,12 @@ public class OrderService {
     }
 
     public OrderView createOrder(OrderDto orderDto) throws JsonProcessingException {
+        System.out.println(orderDto);
         Object o=rabbitTemplate.convertSendAndReceive(exchange,routingkeyUser,new MessageData("","GET_USER",orderDto.getUsername()));
         ObjectMapper objectMapper=new ObjectMapper();
         User user;
+        if(o==null)
+            return new OrderView();
         user=objectMapper.readValue(o.toString(),User.class);
         if(user==null)
             return new OrderView();
