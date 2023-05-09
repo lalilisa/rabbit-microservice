@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface CartRepo extends JpaRepository<Cart, Long> {
-    @Query(value = "select c from Cart c where  c.userName =:username and c.status=1")
+    @Query(value = "select c from Cart c where  c.userName =:username and c.status=0")
     List<Cart> getCartByUserId(String username);
 
     Cart findByUserNameAndProductId(String username,Long productId);

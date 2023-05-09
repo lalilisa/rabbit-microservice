@@ -89,9 +89,8 @@ public class CartService {
     public void updateAfterOrder(OrderDto orderDto){
       List<Cart> list=  cartRepo.getCartByUserId(orderDto.getUsername());
       list.forEach(cart -> {
-          cart.setStatus(0);
+          cartRepo.deleteById(cart.getId());
       });
         System.out.println(list);
-      cartRepo.saveAll(list);
     }
 }
