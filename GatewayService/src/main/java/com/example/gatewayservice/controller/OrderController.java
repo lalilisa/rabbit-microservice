@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/order")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class OrderController {
     @Value("${cosmetics.rabbitmq.exchange}")
